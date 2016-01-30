@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
-    "deploy": "node ./bin/www"
+    "start": "nodemon app.js",
+    "deploy": "node app.js"
   },
   "engines": {
     "node": ">=4.x",
