@@ -3,8 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon app.js",
-    "deploy": "node app.js"
+    "start": "npm run watchify & nodemon app.js",
+    "deploy": "node app.js",
+    "serve": "node app.js",
+    "browserify": "browserify front/app/frontapp.js -o front/static/app.js",
+    "watchify": "watchify front/app/frontapp.js -o front/static/app.js -v"
   },
   "engines": {
     "node": ">=4.x",
