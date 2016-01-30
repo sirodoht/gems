@@ -46,7 +46,7 @@ UserEnt.prototype.drawCard = function() {
 };
 
 UserEnt.prototype.hasColor = function(color) {
-  return this.hand.indexOf(color);
+  return this.hand.indexOf(color) != -1;
 };
 
 UserEnt.prototype.removeColor = function(color) {

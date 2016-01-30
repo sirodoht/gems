@@ -34,15 +34,16 @@ RoomEnt.prototype.addPlayer = function(player) {
 RoomEnt.prototype.begin = function() {
   this.playing = true;
 
-  var playerIdx = Math.round(Math.random*1000)%this.players.length;
+  var playerIdx = Math.round(Math.random()*1000)%this.players.length;
   this.curPlayer = this.players[playerIdx];
 };
 
-RoomEnt.prototype.acceptContribution = function(playerId, ritualIdx, color) {
+RoomEnt.prototype.acceptContribution = function(playerId, ritualOrder, color) {
   var player = this.findPlayerById(playerId);
+  var ritual = this.findRitualByOrder(ritualOrder);
 
-  if(ritualIdx > -1 && ritualIdx < ritualsLength && player && player.id === this.curPlayer.id) {
-    if(this.rituals[ritualIdx].contribute(player, color)) {
+  if(ritual && player && player.id === this.curPlayer.id) {
+    if(ritual.contribute(player, color)) {
       return true;
     }
   }
@@ -52,7 +53,6 @@ RoomEnt.prototype.acceptContribution = function(playerId, ritualIdx, color) {
 
 RoomEnt.prototype.drawCard = function(playerId) {
   var player = this.findPlayerById(playerId);
-
   if(player && playerId === this.curPlayer.id) {
     if(player.drawCard()) {
       return true;
@@ -64,7 +64,7 @@ RoomEnt.prototype.drawCard = function(playerId) {
 RoomEnt.prototype.combine = function(playerId, color1, color2) {
   var player = this.findPlayerById(playerId);
 
-  if(player, player.id === playerId ) {
+  if(player && player.id === this.curPlayer.id) {
     if(player.combine(color1, color2)) {
       return true;
     }
@@ -76,6 +76,10 @@ RoomEnt.prototype.combine = function(playerId, color1, color2) {
 RoomEnt.prototype.findPlayerById = function(playerId) {
   return this.players.find(e => e.id === playerId);
 };
+
+RoomEnt.prototype.findRitualByOrder = function(order) {
+  return this.rituals.find(e => e.order === order);
+}
 
 RoomEnt.prototype.completeRitual = function(ritual) {
   var ritualIdx = this.rituals.indexOf(ritual);
@@ -89,8 +93,12 @@ RoomEnt.prototype.completeRitual = function(ritual) {
 };
 
 RoomEnt.prototype.getClientRituals = function() {
-  var res = this.rituals;
-  res.forEach(e => delete e.contributor);
+  var res = this.rituals.map(e => e= {
+    imageLink: e.imageLink,
+    order: e.order,
+    requiredColors: e.requiredColors,
+    isContributed: e.isContributed
+  });
 
   return res;
 };

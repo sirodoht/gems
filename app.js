@@ -16,26 +16,32 @@ var rooms = [];
 rooms[0] = new RoomEnt();
 
 io.on('connection', function (socket) {
-  var emitHand = function() {
-    socket.emit('hand', p.hand);
+  var emitHand = function(userid) {
+    var hand = rooms[0].findPlayerById(userid).hand;
+    socket.emit('hand', hand);
+  };
+  var emitRituals = function(userid) {
+    socket.emit('rituals', rooms[0].getClientRituals());
   };
 
   var p = new PlayerEnt();
   rooms[0].addPlayer(p);
-  socket.emit('data', {userid: p.id});
-  socket.emit('rituals', rooms[0].getClientRituals());
-  emitHand();
+  emitRituals(p.id);
+  rooms[0].begin();
+  socket.emit('userid', {userid: p.id});
+  emitHand(p.id);
   socket.on('drawcard', function (data) {
     rooms[0].drawCard(data.userid);
-    emitHand();
+    emitHand(data.userid);
   });
   socket.on('combine', function (data) {
     rooms[0].combine(data.userid, data.color1, data.color2);
-    emitHand();
+    emitHand(data.userid);
   });
   socket.on('contribute', function (data) {
-    rooms[0].acceptContribution(data.userid, data.ritual, data.color);
-    emitHand();
+    rooms[0].acceptContribution(data.userid, parseInt(data.ritual), data.color);
+    emitHand(data.userid);
+    emitRituals(data.userid)
   });
 
 });
