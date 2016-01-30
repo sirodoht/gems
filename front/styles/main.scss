@@ -1,5 +1,7 @@
+@import url(https://fonts.googleapis.com/css?family=Kaushan+Script);
+
 body {
-  background: dodgerblue;
+  background: lighten(#4c1b05, 10%);
   width: 100vw;
   height: 100vh;
 }
@@ -13,9 +15,27 @@ body {
 }
 
 .ritual-wrapper {
-  background: #2d6d86;
-  border-radius: 2px;
+  background: #f76157;
+  color: #4c1b05;
+  border-radius: 3px;
+  font-family: "Kaushan Script", serif;
+  font-weight: bolder;
+  font-size: 20px;
+  line-height: 34px;
+  padding: 2vh 2vw;
   width: 40vw;
-  height: 40vh;
-  // display: flex;
+  box-shadow: 0 0 4px rgba(0, 0, 0, .4);
+
+  .lead {
+    font-size: 26px;
+    font-weight: bolder;
+    cursor: pointer;
+  }
+}
+
+.intro-title {
+  // color:
+}
+
+.intro-content {
 }
