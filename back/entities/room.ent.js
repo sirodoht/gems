@@ -10,6 +10,7 @@ var RoomEnt = module.exports = function() {
   this.curPlayer = null;
   this.rituals = [];
   this.playing = false;
+  this.completedRituals = [];
 };
 
 RoomEnt.prototype.populateRituals = function() {
@@ -49,3 +50,16 @@ RoomEnt.prototype.acceptContribution = function(playerId, ritualIdx, color) {
 RoomEnt.prototype.findPlayerById = function(playerId) {
   return this.players.find(e => e.id === playerId);
 };
+
+RoomEnt.prototype.completeRitual = function(ritual) {
+  var ritualIdx = this.rituals.indexOf(ritual);
+  if(ritualIdx > -1 ) {
+    this.rituals.splice(ritualIdx, 1);
+    this.completedRituals.push(ritual);
+    this.rituals.push(new RitualEnt(ritual.order));
+    return true;
+  }
+  return false;
+};
+
+

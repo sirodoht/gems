@@ -34,6 +34,8 @@ RitualEnt.prototype.contribute = function(player, color) {
     this.contributor[colorIdx] = player;
     this.isContributed[colorIdx] = true;
 
+    player.points += this.order * 100;
+
     return true;
   }
 

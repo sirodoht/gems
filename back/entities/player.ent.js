@@ -6,6 +6,7 @@ var handSize = 3;
 var UserEnt = module.exports = function() {
   this.id = null;
   this.hand = [];
+  this.points = 0;
 };
 
 UserEnt.prototype.populateHand = function () {
@@ -24,13 +25,12 @@ UserEnt.prototype.combine = function(color1, color2) {
         this.hand.splice(colorIdx1, 1);
 
         var colorIdx2 = this.hand.indexOf(color2);
-        this.hand.splice(colorIndx2, 1);
+        this.hand.splice(colorIdx2, 1);
 
         this.hand.push(colors[color1].combine[color2]);
         return true;
       }
     }
-  }
 
   return false;
 };
@@ -44,4 +44,4 @@ UserEnt.prototype.drawCard = function() {
 
 UserEnt.prototype.hasColor = function(color) {
   return this.hand.indexOf(color);
-}
+};
