@@ -3,11 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "npm run watchify & nodemon app.js",
+    "start": "npm run watchify & npm run sass-watch & nodemon app.js",
     "deploy": "node app.js",
     "serve": "node app.js",
     "browserify": "browserify front/app/frontapp.js -o front/static/app.js",
-    "watchify": "watchify front/app/frontapp.js --poll 100ms -o front/static/app.js -v"
+    "watchify": "watchify front/app/frontapp.js --poll 100ms -o front/static/app.js -v",
+    "sass": "node-sass --include-path scss front/styles/main.scss front/static/style.css",
+    "sass-watch": "nodemon -e scss -x \"npm run sass\""
   },
   "engines": {
     "node": ">=4.x",
@@ -22,6 +24,7 @@
     "express": "4.13.4",
     "jade": "1.11.0",
     "morgan": "1.6.1",
+    "node-sass": "3.4.2",
     "serve-favicon": "2.3.0",
     "shortid": "^2.2.4",
     "socket.io": "1.4.5"
