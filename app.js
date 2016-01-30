@@ -4,18 +4,40 @@ var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var PlayerEnt = require('./back/entities/player.ent');
+var RoomEnt = require('./back/entities/room.ent');
 var routes = require('./back/routes/index');
 
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
+var rooms = [];
+rooms[0] = new RoomEnt();
+
 io.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
+  var emitHand = function() {
+    socket.emit('hand', p.hand);
+  };
+
+  var p = new PlayerEnt();
+  rooms[0].addPlayer(p);
+  socket.emit('data', {userid: p.id});
+  socket.emit('rituals', rooms[0].getClientRituals());
+  emitHand();
+  socket.on('drawcard', function (data) {
+    rooms[0].drawCard(data.userid);
+    emitHand();
   });
+  socket.on('combine', function (data) {
+    rooms[0].combine(data.userid, data.color1, data.color2);
+    emitHand();
+  });
+  socket.on('contribute', function (data) {
+    rooms[0].acceptContribution(data.userid, data.ritual, data.color);
+    emitHand();
+  });
+
 });
 
 var port = normalizePort(process.env.PORT || '3000');

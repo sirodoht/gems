@@ -7,7 +7,7 @@
     "deploy": "node app.js",
     "serve": "node app.js",
     "browserify": "browserify front/app/frontapp.js -o front/static/app.js",
-    "watchify": "watchify front/app/frontapp.js -o front/static/app.js -v"
+    "watchify": "watchify front/app/frontapp.js --poll 100ms -o front/static/app.js -v"
   },
   "engines": {
     "node": ">=4.x",
@@ -23,6 +23,7 @@
     "jade": "1.11.0",
     "morgan": "1.6.1",
     "serve-favicon": "2.3.0",
+    "shortid": "^2.2.4",
     "socket.io": "1.4.5"
   },
   "devDependencies": {

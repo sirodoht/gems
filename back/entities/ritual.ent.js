@@ -15,6 +15,8 @@ var RitualEnt = module.exports = function(order) {
   this.isContributed = [];
   this.contributor = [];
   this.order = order;
+
+  this.populate();
 };
 
 RitualEnt.prototype.populate = function () {
@@ -22,7 +24,7 @@ RitualEnt.prototype.populate = function () {
     var colorLength = Object.keys(colors).length;
     var colorIdx = Math.round(Math.random()*1000)%colorLength;
     var c = Object.keys(colors)[colorIdx];
-    this.requiredColors[i] = colors[c];
+    this.requiredColors[i] = c;
     this.isContributed[i] = false;
   }
 };
@@ -36,7 +38,9 @@ RitualEnt.prototype.contribute = function(player, color) {
 
     player.points += this.order * 100;
 
-    return true;
+    if(player.removeColor(color)) {
+      return true;
+    }
   }
 
   return false;

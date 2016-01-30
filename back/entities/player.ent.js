@@ -1,12 +1,15 @@
-var colors = require('../etc/color.etc');
+var shortid = require('shortid');
+var colors = require('../etc/colors.etc');
 var handSize = 3;
 /**
  * User entity
  */
 var UserEnt = module.exports = function() {
-  this.id = null;
+  this.id = shortid.generate();
   this.hand = [];
   this.points = 0;
+
+  this.populateHand();
 };
 
 UserEnt.prototype.populateHand = function () {
@@ -14,7 +17,7 @@ UserEnt.prototype.populateHand = function () {
     var colorLength = Object.keys(colors).length;
     var colorIdx = Math.round(Math.random()*1000)%colorLength;
     var c = Object.keys(colors)[colorIdx];
-    this.hand[i] = colors[c];
+    this.hand[i] = c;
   }
 };
 
@@ -44,4 +47,13 @@ UserEnt.prototype.drawCard = function() {
 
 UserEnt.prototype.hasColor = function(color) {
   return this.hand.indexOf(color);
+};
+
+UserEnt.prototype.removeColor = function(color) {
+  if(this.hasColor(color)) {
+    var colorIdx = this.hand.indexOf(color);
+    this.hand.splice(colorIdx, 1);
+    return true;
+  }
+  return false;
 };
