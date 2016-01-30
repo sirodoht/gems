@@ -39,8 +39,29 @@ RoomEnt.prototype.begin = function() {
 RoomEnt.prototype.acceptContribution = function(playerId, ritualIdx, color) {
   var player = this.findPlayerById(playerId);
 
-  if(ritualIdx > -1 && ritualIdx < ritualsLength && player) {
+  if(ritualIdx > -1 && ritualIdx < ritualsLength && player && player.id === this.curPlayer.id) {
     this.rituals[ritualIdx].contribute(player, color);
+    return true;
+  }
+
+  return false;
+};
+
+RoomEnt.prototype.drawCard = function(playerId) {
+  var player = this.findPlayerById(playerId);
+
+  if(player && playerId === this.curPlayer.id) {
+    player.drawCard();
+    return true;
+  }
+  return false;
+};
+
+RoomEnt.prototype.combine = function(playerId, color1, color2) {
+  var player = this.findPlayerById(playerId);
+
+  if(player, player.id === playerId ) {
+    player.combine(color1, color2);
     return true;
   }
 
