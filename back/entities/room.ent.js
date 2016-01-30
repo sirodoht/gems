@@ -39,11 +39,16 @@ RoomEnt.prototype.begin = function() {
 };
 
 RoomEnt.prototype.acceptContribution = function(playerId, ritualOrder, color) {
+  if(!this.playing) {
+    return false;
+  }
+
   var player = this.findPlayerById(playerId);
   var ritual = this.findRitualByOrder(ritualOrder);
 
   if(ritual && player && player.id === this.curPlayer.id) {
     if(ritual.contribute(player, color)) {
+      this.rotatePlayer();
       return true;
     }
   }
@@ -52,9 +57,14 @@ RoomEnt.prototype.acceptContribution = function(playerId, ritualOrder, color) {
 };
 
 RoomEnt.prototype.drawCard = function(playerId) {
+  if(!this.playing) {
+    return false;
+  }
+
   var player = this.findPlayerById(playerId);
   if(player && playerId === this.curPlayer.id) {
     if(player.drawCard()) {
+      this.rotatePlayer();
       return true;
     }
   }
@@ -62,10 +72,15 @@ RoomEnt.prototype.drawCard = function(playerId) {
 };
 
 RoomEnt.prototype.combine = function(playerId, color1, color2) {
+  if(!this.playing) {
+    return false;
+  }
+
   var player = this.findPlayerById(playerId);
 
   if(player && player.id === this.curPlayer.id) {
     if(player.combine(color1, color2)) {
+      this.rotatePlayer();
       return true;
     }
   }
@@ -101,4 +116,9 @@ RoomEnt.prototype.getClientRituals = function() {
   });
 
   return res;
+};
+
+RoomEnt.prototype.rotatePlayer = function() {
+  var nextPlayerIdx = (this.players.indexOf(this.curPlayer)+1)%this.players.length;
+  this.curPlayer = this.players[nextPlayerIdx];
 };

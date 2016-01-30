@@ -43,6 +43,7 @@ UserEnt.prototype.drawCard = function() {
   var colorIdx = Math.round(Math.random()*1000)%colorLength;
   var c = Object.keys(colors)[colorIdx];
   this.hand.push(c);
+  return true;
 };
 
 UserEnt.prototype.hasColor = function(color) {
