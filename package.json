@@ -5,7 +5,7 @@
   "scripts": {
     "test": "jshint app.js && jshint front/app/frontapp.js",
     "start": "npm run watchify & npm run sass-watch & nodemon app.js",
-    "deploy": "(npm run browserify && npm run sass) & node app.js",
+    "deploy": "npm run browserify && npm run sass && node app.js",
     "serve": "node app.js",
     "browserify": "browserify front/app/frontapp.js -o front/static/app.js",
     "watchify": "watchify front/app/frontapp.js -o front/static/app.js -v",
@@ -13,7 +13,7 @@
     "sass-watch": "nodemon -e scss -x \"npm run sass\""
   },
   "engines": {
-    "node": ">=4.x",
+    "node": "4.x",
     "npm": ">=3.3.x"
   },
   "dependencies": {
