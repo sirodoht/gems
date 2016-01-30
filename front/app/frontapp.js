@@ -52,5 +52,5 @@ $('#contribute').on('click', function() {
 
 $('#combine').on('click', function() {
   combine($('#combine-color-1').val(), $('#combine-color-2').val());
-})
+});
 

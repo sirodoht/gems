@@ -79,7 +79,7 @@ RoomEnt.prototype.findPlayerById = function(playerId) {
 
 RoomEnt.prototype.findRitualByOrder = function(order) {
   return this.rituals.find(e => e.order === order);
-}
+};
 
 RoomEnt.prototype.completeRitual = function(ritual) {
   var ritualIdx = this.rituals.indexOf(ritual);

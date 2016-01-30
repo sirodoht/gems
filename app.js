@@ -20,7 +20,7 @@ io.on('connection', function (socket) {
     var hand = rooms[0].findPlayerById(userid).hand;
     socket.emit('hand', hand);
   };
-  var emitRituals = function(userid) {
+  var emitRituals = function() {
     socket.emit('rituals', rooms[0].getClientRituals());
   };
 
@@ -41,7 +41,7 @@ io.on('connection', function (socket) {
   socket.on('contribute', function (data) {
     rooms[0].acceptContribution(data.userid, parseInt(data.ritual), data.color);
     emitHand(data.userid);
-    emitRituals(data.userid)
+    emitRituals(data.userid);
   });
 
 });
