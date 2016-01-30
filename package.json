@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "test": "jshint app.js && jshint front/app/frontapp.js",
     "start": "npm run watchify & npm run sass-watch & nodemon app.js",
-    "deploy": "node app.js",
+    "deploy": "(npm run browserify && npm run sass) & node app.js",
     "serve": "node app.js",
     "browserify": "browserify front/app/frontapp.js -o front/static/app.js",
     "watchify": "watchify front/app/frontapp.js -o front/static/app.js -v",
