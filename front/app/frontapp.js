@@ -4,10 +4,15 @@ var socket = io('localhost:3000');
 var userid = null;
 var rituals = null;
 var hand = null;
+var colors = null;
 
 socket.on('userid', function (data) {
   userid = data.userid;
   console.log(userid);
+});
+
+socket.on('colors', function(data) {
+  colors = data.colors;
 });
 
 socket.on('rituals', function(data) {
@@ -38,6 +43,11 @@ function contribute(ritual, color) {
     ritual: ritual,
     color: color
   });
+
+}
+
+function begin() {
+  socket.emit('begin');
 }
 
 
@@ -53,4 +63,12 @@ $('#contribute').on('click', function() {
 $('#combine').on('click', function() {
   combine($('#combine-color-1').val(), $('#combine-color-2').val());
 });
+
+$('#begin').on('click', function() {
+  begin();
+});
+
+var cardTmpl = _.template('<div class="card" style="background-color:<% colors[c].rgb %></div>');
+
+$('.cards').append(cardTmpl({c:'red', colors: colors}));
 

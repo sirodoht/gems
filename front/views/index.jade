@@ -2,13 +2,7 @@ extends layout
 
 block content
   h1 #{title}
-  button(id="contribute") Contribute
-  button(id="drawcard") Draw Card
-  button(id="combine") Combine
-  input(type="text" id="contribute-order")
-  input(type="text" id="contribute-color")
-  input(type="text" id="combine-color-1")
-  input(type="text" id="combine-color-2")
+
   .body-wrapper
     .ritual-wrapper
       .ritual-intro
@@ -19,4 +13,13 @@ block content
           p Panor people were interested in this because they wanted to paint their houses, but they were infamous procrastinators so when they heard about the magic potion they didn't miss the chance to get it.
           p Loias hadn't finish the portion yet, so he offered them this deal: Help with the potion production and split it in half with them.
           p Panorers accepted! Help them produce the potion!
-          p.lead.js-play Play Now!
+          p.lead.js-play Play Now!7
+  .cards
+  button(id="contribute") Contribute
+  button(id="drawcard") Draw Card
+  button(id="combine") Combine
+  input(type="text" id="contribute-order")
+  input(type="text" id="contribute-color")
+  button(id="begin") Begin
+  input(type="text" id="combine-color-1")
+  input(type="text" id="combine-color-2")

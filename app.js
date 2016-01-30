@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var PlayerEnt = require('./back/entities/player.ent');
 var RoomEnt = require('./back/entities/room.ent');
 var routes = require('./back/routes/index');
+var colors = require('./back/etc/colors.etc');
 
 var app = express();
 var server = require('http').Server(app);
@@ -27,9 +28,13 @@ io.on('connection', function (socket) {
   var p = new PlayerEnt();
   rooms[0].addPlayer(p);
   emitRituals(p.id);
-  rooms[0].begin();
   socket.emit('userid', {userid: p.id});
   emitHand(p.id);
+  socket.emit('colors', {colors: colors});
+
+  socket.on('begin', function() {
+    rooms[0].begin();
+  });
   socket.on('drawcard', function (data) {
     rooms[0].drawCard(data.userid);
     emitHand(data.userid);
