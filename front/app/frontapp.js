@@ -6,8 +6,8 @@ var rituals = null;
 var hand = null;
 
 socket.on('userid', function (data) {
-  userid = data;
-  console.log(data);
+  userid = data.userid;
+  console.log(userid);
 });
 
 socket.on('rituals', function(data) {
@@ -38,9 +38,19 @@ function contribute(ritual, color) {
     ritual: ritual,
     color: color
   });
-
-  document.getElementById('drawcard').addEventListener('click', function() {
-    drawCard();
-  });
 }
+
+
+$('#drawcard').on('click', function() {
+  console.log(userid);
+  drawCard();
+});
+
+$('#contribute').on('click', function() {
+  contribute($('#contribute-order').val(), $('#contribute-color').val());
+});
+
+$('#combine').on('click', function() {
+  combine($('#combine-color-1').val(), $('#combine-color-2').val());
+})
 
