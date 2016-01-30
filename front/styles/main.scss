@@ -1,0 +1,21 @@
+body {
+  background: dodgerblue;
+  width: 100vw;
+  height: 100vh;
+}
+
+.body-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ritual-wrapper {
+  background: #2d6d86;
+  border-radius: 2px;
+  width: 40vw;
+  height: 40vh;
+  // display: flex;
+}
