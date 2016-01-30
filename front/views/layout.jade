@@ -2,6 +2,9 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/css/style.css')
+    //- link(rel='stylesheet', href='/css/style.css')
   body
     block content
+  footer
+    script(src="/socket.io/socket.io.js")
+    script(src="/app.js")
