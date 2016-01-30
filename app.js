@@ -1,10 +1,6 @@
-var http = require('http');
 var debug = require('debug')('gems:server');
-var server = require('http').createServer();
 var express = require('express');
-var WebSocketServer = require('ws').Server;
 var path = require('path');
-var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -12,7 +8,24 @@ var bodyParser = require('body-parser');
 var routes = require('./back/routes/index');
 
 var app = express();
-var wss = new WebSocketServer({ server: server });
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
+io.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
+});
+
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+app.on('error', onError);
+app.on('listening', onListening);
+server.listen(port);
+// io.on('error', onError);
+// io.on('listening', onListening);
+// io.listen(port);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'front/views'));
@@ -44,14 +57,14 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-
+module.exports = app;
 
 // error handlers
 
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
+  app.use(function(err, req, res) {
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,
@@ -62,7 +75,7 @@ if (app.get('env') === 'development') {
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
+app.use(function(err, req, res) {
   res.status(err.status || 500);
   res.render('error', {
     message: err.message,
@@ -71,16 +84,7 @@ app.use(function(err, req, res, next) {
 });
 
 
-/**
- * Listen on provided port, on all network interfaces.
- */
-var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
-app.listen(port);
-app.on('error', onError);
-app.on('listening', onListening);
 
-module.exports = app;
 
 /**
  * Normalize a port into a number, string, or false.
