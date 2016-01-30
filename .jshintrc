@@ -114,6 +114,7 @@
    * PROJECT GLOBALS
    */
   "globals": {
-    "assert": false
+    "assert": false,
+    "_": false
   }
 }
