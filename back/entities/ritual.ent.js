@@ -30,9 +30,9 @@ RitualEnt.prototype.populate = function () {
 };
 
 RitualEnt.prototype.contribute = function(player, color) {
-  var colorIdx = this.requiredColors.indexOf(color);
+  var colorIdx = this.indexOfNonContributedColor(color);
 
-  if( colorIdx > -1 && !this.isContributed[colorIdx]) {
+  if( colorIdx > -1) {
     this.contributor[colorIdx] = player;
     this.isContributed[colorIdx] = true;
 
@@ -44,4 +44,13 @@ RitualEnt.prototype.contribute = function(player, color) {
   }
 
   return false;
+};
+
+RitualEnt.prototype.indexOfNonContributedColor = function(color) {
+  return this.requiredColors.findIndex((e,i)=>e===color && !this.isContributed[i]);
+};
+
+
+RitualEnt.prototype.isComplete = function() {
+  return this.isContributed.reduce((p,c)=> p&&c);
 };
