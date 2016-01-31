@@ -54,7 +54,7 @@ function createGrid(shape) {
   return grid;
 }
 
-$('body').append([createGrid('triangle'), createGrid('pentagon'), createGrid('circle')]);
+$('.ritual-grids').append([createGrid('triangle'), createGrid('pentagon'), createGrid('circle')]);
 
 socket.on('rituals', function(data) {
   rituals = data;
@@ -73,9 +73,20 @@ socket.on('rituals', function(data) {
   });
 });
 
+var cardTmpl = _.template('<div class="card" '+
+                          'style="'+
+                          'background-color:<% print(colors[c].rgb) %>"></div>');
+
 socket.on('hand', function(data) {
   hand = data;
   console.log(data);
+  $cards = $('.cards');
+  $cards.html('');
+hand.forEach(function(c) {
+    var $card = $(cardTmpl({c:c, colors: colors}));
+    $cards.append($card);
+    $card.data('color', c);
+  });
 });
 
 function drawCard() {
@@ -120,8 +131,4 @@ $('#combine').on('click', function() {
 $('#begin').on('click', function() {
   begin();
 });
-
-var cardTmpl = _.template('<div class="card" style="background-color:<% colors[c].rgb %></div>');
-
-$('.cards').append(cardTmpl({c:'red', colors: colors}));
 

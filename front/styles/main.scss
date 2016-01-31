@@ -58,8 +58,24 @@ $cell-number: 5;
   background-size: $cell-size*$cell-number auto;
   width: $cell-size * $cell-number;
   height: $cell-size * $cell-number;
+  margin-right: $cell-size*5/3;
 }
 
 .ritual-holder {
   border-radius: 10px;
+}
+
+.cards {
+  display: flex;
+}
+
+$card-size: 100px;
+.card {
+  width: $card-size;
+  height: $card-size;
+  margin-right: $card-size/5;
+}
+
+.ritual-grids {
+  display: flex;
 }
