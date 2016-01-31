@@ -39,3 +39,27 @@ body {
 
 .intro-content {
 }
+
+$cell-size: 20px;
+$cell-number: 5;
+
+.ritual-cell {
+  width: $cell-size;
+  height: $cell-size;
+}
+
+.ritual-row {
+  display: flex;
+  width: $cell-size * $cell-number;
+  height: $cell-size;
+}
+
+.ritual-grid {
+  background-size: $cell-size*$cell-number auto;
+  width: $cell-size * $cell-number;
+  height: $cell-size * $cell-number;
+}
+
+.ritual-holder {
+  border-radius: 10px;
+}
