@@ -48,6 +48,10 @@ RoomEnt.prototype.acceptContribution = function(playerId, ritualOrder, color) {
 
   if(ritual && player && player.id === this.curPlayer.id) {
     if(ritual.contribute(player, color)) {
+
+      if(ritual.isComplete()) {
+        this.completeRitual(ritual);
+      }
       this.rotatePlayer();
       return true;
     }
