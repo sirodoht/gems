@@ -1,5 +1,7 @@
 /* globals io */
 
+require('./view.js');
+
 var socket = io('localhost:3000');
 var userid = null;
 var rituals = null;
@@ -221,4 +223,3 @@ $('#drawcard').on('click', function() {
 $('#begin').on('click', function() {
   begin();
 });
-
