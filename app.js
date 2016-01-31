@@ -111,9 +111,6 @@ app.set('port', port);
 app.on('error', onError);
 app.on('listening', onListening);
 server.listen(port);
-// io.on('error', onError);
-// io.on('listening', onListening);
-// io.listen(port);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'front/views'));
