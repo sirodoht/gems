@@ -67,7 +67,7 @@ socket.on('rituals', function(data) {
       holders.eq(i).data({
         color:c,
         isContributed: r.isContributed[i]
-      })
+      }).html((r.isContributed[i])?'C':'')
       .css({'background-color': colors[c].rgb});
     });
   });
@@ -82,7 +82,7 @@ socket.on('hand', function(data) {
   console.log(data);
   $cards = $('.cards');
   $cards.html('');
-hand.forEach(function(c) {
+  hand.forEach(function(c) {
     var $card = $(cardTmpl({c:c, colors: colors}));
     $cards.append($card);
     $card.data('color', c);
