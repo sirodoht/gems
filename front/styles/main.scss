@@ -68,6 +68,7 @@ $cell-number: 5;
 
 .cards {
   display: flex;
+  cursor: move;
 }
 
 $card-size: 100px;

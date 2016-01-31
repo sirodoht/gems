@@ -23,6 +23,8 @@ var gridTmpl = _.template('<div class="ritual-grid"'+
 function createGrid(shape) {
   var grid = $(gridTmpl({shape:shape}));
   var cells = [];
+  var orderShapeMap = {'triangle':3, 'pentagon':5, 'circle':8};
+  grid.data('order', orderShapeMap[shape]);
 
   var coordinates = {
     triangle: {
@@ -71,22 +73,118 @@ socket.on('rituals', function(data) {
       .css({'background-color': colors[c].rgb});
     });
   });
+  var $ritualGrids = $('.ritual-grid');
+  $ritualGrids.on('dragover', function(e) {
+    var dtObj = e.originalEvent.dataTransfer;
+
+    dtObj.effectAllowed = 'all';
+
+    this.style.borderStyle = 'dashed';
+  });
+
+  $ritualGrids.on('dragleave', function(e) {
+    this.style.borderStyle = 'none';
+  });
+
+  $ritualGrids.on('drop', function(e) {
+    if (e.stopPropagation) {
+      e.stopPropagation();
+    }
+
+    var dtObj = e.originalEvent.dataTransfer;
+
+    var color = dtObj.getData('text/json');
+
+    var order = $(this).data('order');
+
+    contribute(order, color);
+
+    this.style.borderStyle = 'none';
+
+    return false;
+  });
+
+  $ritualGrids.on('dragover', function(e) {
+    if (e.preventDefault) {
+      e.preventDefault(); // Necessary. Allows us to drop.
+    }
+    return false;
+  });
 });
 
 var cardTmpl = _.template('<div class="card" '+
                           'style="'+
-                          'background-color:<% print(colors[c].rgb) %>"></div>');
+                          'background-color:<% print(colors[c].rgb) %>" draggable="true"></div>');
 
 socket.on('hand', function(data) {
   hand = data;
   console.log(data);
-  $cards = $('.cards');
+  var $cards = $('.cards');
   $cards.html('');
   hand.forEach(function(c) {
     var $card = $(cardTmpl({c:c, colors: colors}));
     $cards.append($card);
     $card.data('color', c);
   });
+  var $cardElems = $('.card');
+
+  var $cellSize = $('.ritual-cell').css('width');
+  var $cardSize = $('.card').css('width');
+
+  $cardElems.on('dragstart', function(e) {
+
+    var dtObj = e.originalEvent.dataTransfer;
+
+    var dragElem = document.createElement('img');
+    dragElem.style.height = $cellSize;
+    dragElem.style.width = $cellSize;
+    dragElem.style.backgroundColor =  this.style.backgroundColor;
+
+
+    dtObj.setDragImage(dragElem, -10, -10);
+
+    dtObj.setData('text/json', $(e.target).data('color'));
+  });
+
+  $cardElems.on('dragend', function(e) {
+
+    this.style.width = $cardSize;
+    this.style.height = $cardSize;
+    this.style.opacity = 1;
+  });
+
+  $cardElems.on('dragover', function(e) {
+    return false;
+  });
+
+  $cardElems.on('dragenter', function(e) {
+    this.style.borderStyle = 'dashed';
+  });
+
+  $cardElems.on('dragleave', function(e) {
+    this.style.borderStyle = 'none';
+  })
+
+  $cardElems.on('drop', function(e) {
+    if (e.stopPropagation) {
+      e.stopPropagation();
+    }
+
+    var dtObj = e.originalEvent.dataTransfer;
+
+    var color2 = dtObj.getData('text/json');
+    var color1 = $(this).data('color');
+
+    combine(color1, color2);
+
+    this.style.borderStyle = 'none';
+
+
+  });
+});
+
+socket.on('disconnect', function() {
+  socket.close();
 });
 
 function drawCard() {
@@ -118,14 +216,6 @@ function begin() {
 $('#drawcard').on('click', function() {
   console.log(userid);
   drawCard();
-});
-
-$('#contribute').on('click', function() {
-  contribute($('#contribute-order').val(), $('#contribute-color').val());
-});
-
-$('#combine').on('click', function() {
-  combine($('#combine-color-1').val(), $('#combine-color-2').val());
 });
 
 $('#begin').on('click', function() {
