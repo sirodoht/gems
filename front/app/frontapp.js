@@ -5,6 +5,8 @@ var userid = null;
 var rituals = null;
 var hand = null;
 var colors = require('../../back/etc/colors.etc');
+var firstHand = true;
+var firstRituals = true;
 
 socket.on('userid', function (data) {
   userid = data.userid;
@@ -74,42 +76,45 @@ socket.on('rituals', function(data) {
     });
   });
   var $ritualGrids = $('.ritual-grid');
-  $ritualGrids.on('dragover', function(e) {
-    var dtObj = e.originalEvent.dataTransfer;
 
-    dtObj.effectAllowed = 'all';
+  if(firstRituals) {
+    $ritualGrids.on('dragover', function(e) {
+      var dtObj = e.originalEvent.dataTransfer;
 
-    this.style.borderStyle = 'dashed';
-  });
+      dtObj.effectAllowed = 'all';
 
-  $ritualGrids.on('dragleave', function(e) {
-    this.style.borderStyle = 'none';
-  });
+      this.style.borderStyle = 'dashed';
+    });
 
-  $ritualGrids.on('drop', function(e) {
-    if (e.stopPropagation) {
-      e.stopPropagation();
-    }
+    $ritualGrids.on('dragleave', function(e) {
+      this.style.borderStyle = 'none';
+    });
 
-    var dtObj = e.originalEvent.dataTransfer;
+    $ritualGrids.on('drop', function(e) {
+      if (e.stopPropagation) {
+        e.stopPropagation();
+      }
 
-    var color = dtObj.getData('text/json');
+      var dtObj = e.originalEvent.dataTransfer;
 
-    var order = $(this).data('order');
+      var color = dtObj.getData('text/json');
 
-    contribute(order, color);
+      var order = $(this).data('order');
 
-    this.style.borderStyle = 'none';
+      contribute(order, color);
 
-    return false;
-  });
+      this.style.borderStyle = 'none';
+    });
 
-  $ritualGrids.on('dragover', function(e) {
-    if (e.preventDefault) {
-      e.preventDefault(); // Necessary. Allows us to drop.
-    }
-    return false;
-  });
+    $ritualGrids.on('dragover', function(e) {
+      if (e.preventDefault) {
+        e.preventDefault(); // Necessary. Allows us to drop.
+      }
+      return false;
+    });
+
+    firstRituals = false;
+  }
 });
 
 var cardTmpl = _.template('<div class="card" '+
