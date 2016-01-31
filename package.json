@@ -5,7 +5,7 @@
   "scripts": {
     "test": "jshint app.js && jshint front/app/frontapp.js",
     "start": "npm run watchify & npm run sass-watch & nodemon app.js",
-    "deploy": "npm run browserify && npm run sass && node app.js",
+    "deploy": "npm run browserify && npm run sass && forever app.js",
     "serve": "node app.js",
     "browserify": "browserify front/app/frontapp.js -o front/static/app.js",
     "watchify": "watchify front/app/frontapp.js --poll 100ms -o front/static/app.js -v",
@@ -23,6 +23,7 @@
     "cookie-parser": "1.4.1",
     "debug": "2.2.0",
     "express": "4.13.4",
+    "forever": "0.15.1",
     "jade": "1.11.0",
     "morgan": "1.6.1",
     "node-sass": "3.4.2",
