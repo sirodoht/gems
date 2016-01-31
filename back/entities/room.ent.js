@@ -126,3 +126,12 @@ RoomEnt.prototype.rotatePlayer = function() {
   var nextPlayerIdx = (this.players.indexOf(this.curPlayer)+1)%this.players.length;
   this.curPlayer = this.players[nextPlayerIdx];
 };
+
+RoomEnt.prototype.kickPlayer = function(playerId) {
+  var p = this.findPlayerById(playerId);
+  var playerIdx = this.players.indexOf(p);
+  this.players.splice(playerIdx, 1);
+  if(playerId === this.curPlayer.id) {
+    this.rotatePlayer();
+  }
+};

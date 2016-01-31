@@ -15,10 +15,11 @@ var io = require('socket.io')(server);
 
 var rooms = [];
 rooms[0] = new RoomEnt();
+var curRoom = 0;
 
 io.on('connection', function (socket) {
   var emitHand = function(userid) {
-    var player = rooms[0].findPlayerById(userid);
+    var player = rooms[playerRoom].findPlayerById(userid);
     if(player) {
       var hand = player.hand;
       socket.emit('hand', hand);
@@ -27,37 +28,45 @@ io.on('connection', function (socket) {
     return false;
   };
   var emitRituals = function() {
-    socket.emit('rituals', rooms[0].getClientRituals());
+    socket.emit('rituals', rooms[playerRoom].getClientRituals());
+  };
+  var broadcastRituals = function() {
+    socket.broadcast.to(playerRoom+'-room').
+      emit('rituals', rooms[playerRoom].getClientRituals());
   };
 
   var p = new PlayerEnt();
-  rooms[0].addPlayer(p);
+  var playerRoom = curRoom;
+  socket.join(playerRoom+'-room');
+  rooms[curRoom].addPlayer(p);
   emitRituals(p.id);
   socket.emit('userid', {userid: p.id});
   emitHand(p.id);
   socket.emit('colors', {colors: colors});
 
   socket.on('begin', function() {
-    rooms[0].begin();
+    rooms[playerRoom].begin();
+    curRoom++;
+    rooms[curRoom] = new RoomEnt();
   });
   socket.on('drawcard', function (data) {
-    rooms[0].drawCard(data.userid);
+    rooms[playerRoom].drawCard(data.userid);
     emitHand(data.userid);
   });
   socket.on('combine', function (data) {
-    rooms[0].combine(data.userid, data.color1, data.color2);
+    rooms[playerRoom].combine(data.userid, data.color1, data.color2);
     emitHand(data.userid);
   });
   socket.on('contribute', function (data) {
-    rooms[0].acceptContribution(data.userid, parseInt(data.ritual), data.color);
+    rooms[playerRoom].acceptContribution(data.userid, parseInt(data.ritual), data.color);
     emitHand(data.userid);
-    emitRituals(data.userid);
+    broadcastRituals(data.userid);
+    emitRituals();
   });
 
   socket.on('disconnect', function() {
-    var playerIdx = rooms[0].players.indexOf(p);
-    rooms[0].players.splice(playerIdx, 1);
-  })
+    rooms[playerRoom].kickPlayer(p);
+  });
 
 });
 
