@@ -7,8 +7,34 @@ var userid = null;
 var rituals = null;
 var hand = null;
 var colors = require('../../back/etc/colors.etc');
-var firstHand = true;
 var firstRituals = true;
+
+
+
+function drawCard() {
+  socket.emit('drawcard', {userid: userid});
+}
+
+function combine(color1, color2) {
+  socket.emit('combine', {
+    userid: userid,
+    color1: color1,
+    color2: color2
+  });
+}
+
+function contribute(ritual, color) {
+  socket.emit('contribute', {
+    userid: userid,
+    ritual: ritual,
+    color: color
+  });
+
+}
+
+function begin() {
+  socket.emit('begin');
+}
 
 socket.on('userid', function (data) {
   userid = data.userid;
@@ -88,7 +114,7 @@ socket.on('rituals', function(data) {
       this.style.borderStyle = 'dashed';
     });
 
-    $ritualGrids.on('dragleave', function(e) {
+    $ritualGrids.on('dragleave', function() {
       this.style.borderStyle = 'none';
     });
 
@@ -153,24 +179,24 @@ socket.on('hand', function(data) {
     dtObj.setData('text/json', $(e.target).data('color'));
   });
 
-  $cardElems.on('dragend', function(e) {
+  $cardElems.on('dragend', function() {
 
     this.style.width = $cardSize;
     this.style.height = $cardSize;
     this.style.opacity = 1;
   });
 
-  $cardElems.on('dragover', function(e) {
+  $cardElems.on('dragover', function() {
     return false;
   });
 
-  $cardElems.on('dragenter', function(e) {
+  $cardElems.on('dragenter', function() {
     this.style.borderStyle = 'dashed';
   });
 
-  $cardElems.on('dragleave', function(e) {
+  $cardElems.on('dragleave', function() {
     this.style.borderStyle = 'none';
-  })
+  });
 
   $cardElems.on('drop', function(e) {
     if (e.stopPropagation) {
@@ -193,31 +219,6 @@ socket.on('hand', function(data) {
 socket.on('disconnect', function() {
   socket.close();
 });
-
-function drawCard() {
-  socket.emit('drawcard', {userid: userid});
-}
-
-function combine(color1, color2) {
-  socket.emit('combine', {
-    userid: userid,
-    color1: color1,
-    color2: color2
-  });
-}
-
-function contribute(ritual, color) {
-  socket.emit('contribute', {
-    userid: userid,
-    ritual: ritual,
-    color: color
-  });
-
-}
-
-function begin() {
-  socket.emit('begin');
-}
 
 
 $('#drawcard').on('click', function() {
