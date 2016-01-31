@@ -2,7 +2,7 @@
 
 require('./view.js');
 
-var socket = io('http://gems.nepenth.xyz);
+var socket = io('http://gems.nepenth.xyz');
 var userid = null;
 var rituals = null;
 var hand = null;
