@@ -18,8 +18,13 @@ rooms[0] = new RoomEnt();
 
 io.on('connection', function (socket) {
   var emitHand = function(userid) {
-    var hand = rooms[0].findPlayerById(userid).hand;
-    socket.emit('hand', hand);
+    var player = rooms[0].findPlayerById(userid);
+    if(player) {
+      var hand = player.hand;
+      socket.emit('hand', hand);
+      return true;
+    }
+    return false;
   };
   var emitRituals = function() {
     socket.emit('rituals', rooms[0].getClientRituals());
@@ -48,6 +53,11 @@ io.on('connection', function (socket) {
     emitHand(data.userid);
     emitRituals(data.userid);
   });
+
+  socket.on('disconnect', function() {
+    var playerIdx = rooms[0].players.indexOf(p);
+    rooms[0].players.splice(playerIdx, 1);
+  })
 
 });
 
