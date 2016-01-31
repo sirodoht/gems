@@ -2,7 +2,7 @@
  * Colors
  */
 var colors = module.exports = {
-  yellow: {rgb: '#f00'},
+  yellow: {rgb: '#ff0'},
   magenta: {rgb: '#f0f'},
   cyan: {rgb: '#0ff'},
   grey: {rgb: '#888'},
@@ -10,8 +10,8 @@ var colors = module.exports = {
   lightRed: {rgb: '#f88'},
   lightGreen: {rgb: '#8f8'},
   darkGreen: {rgb: '#080'},
-  lightBllue: {rgb: '#88f'},
-  darkBllue: {rgb: '#008'},
+  lightBlue: {rgb: '#88f'},
+  darkBlue: {rgb: '#008'},
 };
 
 colors.red= {
@@ -59,7 +59,7 @@ colors.dark = {
 };
 
 colors.light = {
-  rgb: '#000',
+  rgb: '#fff',
   combine: {
     red: 'lightRed',
     green: 'lightGreen',
