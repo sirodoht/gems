@@ -77,10 +77,11 @@ $cell-number: 5;
 
 .cards {
   display: flex;
-  cursor: move;
+  flex-wrap: wrap;
   justify-content: center;
   padding-top: 4vh;
   padding-bottom: 2vh;
+  cursor: move;
 }
 
 $card-size: 60px;
@@ -88,12 +89,13 @@ $card-size: 60px;
   width: $card-size * 1.1;
   height: $card-size * 1.3;
   margin-right: $card-size / 5;
+  margin-bottom: $card-size / 5;
 
   display: inline-block;
   vertical-align: middle;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 8px rgba(180, 180, 180, 0.5);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   -moz-osx-font-smoothing: grayscale;
