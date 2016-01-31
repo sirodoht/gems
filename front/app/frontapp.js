@@ -2,7 +2,7 @@
 
 require('./view.js');
 
-var socket = io('localhost:3000');
+var socket = io(window.location);
 var userid = null;
 var rituals = null;
 var hand = null;
